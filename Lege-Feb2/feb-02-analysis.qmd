@@ -1,0 +1,30 @@
+---
+title: "feb-02-analysis"
+format: html
+editor: visual
+---
+
+## Bills Introduced in the 2025 Texas Legislative Session
+
+### January 18 to February 2 
+
+This is the analysis portion of bill data since the start of the filing period up until Feb. 2. I'm importing the data file I saved from the cleaning portion. These are some of the questions I hope to answer:
+
+-   x
+
+-   y
+
+-   z
+
+### Setup
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+### Importing my clean data
+
+```{r}
+read_rds("data-processed/02texasbills.rds")
+```

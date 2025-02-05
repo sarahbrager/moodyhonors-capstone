@@ -1,0 +1,11 @@
+bill_id,roll_call_id,date,chamber,description,yea,nay,nv,absent,total
+1916334,1471613,2025-01-14,House,"Adopted RV#1",145,5,0,0,150
+1918154,1471581,2025-01-14,Senate,Adopted,31,0,0,0,31
+1918154,1471674,2025-01-15,House,"Adopted RV#5",129,19,1,1,150
+1918154,1478608,2025-01-14,Senate,Adopted,31,0,0,0,31
+1920180,1472338,2025-01-15,Senate,"Read & adopted",31,0,0,0,31
+1920627,1472340,2025-01-15,Senate,"Read & adopted",31,0,0,0,31
+1936766,1473848,2025-01-23,House,"Motion prevails RV#9",107,35,1,7,150
+1936766,1473849,2025-01-23,House,"Adopted RV#10",116,23,1,10,150
+1942891,1474965,2025-01-27,House,"Adopted RV#12",116,25,1,8,150
+1942891,1475906,2025-01-28,Senate,Adopted,31,0,0,0,31

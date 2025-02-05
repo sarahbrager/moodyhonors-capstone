@@ -1,0 +1,90 @@
+---
+title: "01-cleaning-NEW"
+format: html
+editor: visual
+---
+
+## Bills Introduced in the 2025 Texas Legislative Session
+
+### November 12 to January 17
+
+This is the start of my analysis of bills filed in the current Texas Legislative session. This document shows my cleaning of the data. I'm combining and cleaning data from three different csvs to include bill_id, bill_number, date_filed, and description as well as important identifying information for the sponsor of each bill.
+
+### Setup
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+```
+
+### Importing the Data
+
+```{r}
+#individual bills 
+bills <- read_csv("data-raw/bills.csv")
+
+bills
+```
+
+```{r}
+#individual people/lawmakers
+lawmakers <- read_csv("data-raw/people.csv")
+
+lawmakers
+```
+
+```{r}
+#sponsors for each bill
+sponsors <- read_csv("data-raw/sponsors.csv")
+
+sponsors
+```
+
+### Cleaning up each table
+
+```{r}
+#bill details 
+bills_clean <- bills |> 
+  rename(date_filed = status_date) |> 
+  select(-session_id, -status, -status_desc, -title, -committee_id, -committee, -last_action_date, -last_action, -url, -state_link) 
+
+bills_clean
+```
+
+```{r}
+#lawmaker details
+lawmakers_clean <- lawmakers |> 
+  select(people_id, name, party, role, district)
+
+lawmakers_clean
+```
+
+Note: the sponsor data is fine as is
+
+### Merging the data to make one big table
+
+```{r}
+#lawmaker and sponsor data first
+lawmaker_sponsor <- merge(lawmakers_clean, sponsors) |> 
+  select(-position)
+
+lawmaker_sponsor
+```
+
+```{r}
+#adding date filed and description columns
+bill_details <- lawmaker_sponsor |> 
+  left_join(bills_clean, by = join_by(bill_id)) 
+
+bill_details
+```
+
+### Saving this table for my analysis
+
+```{r}
+#writing an rds file
+bill_details |> 
+  write_rds("data-processed/01-texasbills.rds")
+
+```

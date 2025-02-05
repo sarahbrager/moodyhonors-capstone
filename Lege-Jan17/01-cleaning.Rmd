@@ -1,0 +1,73 @@
+---
+title: "TX Lege Analysis, practice"
+output: html_notebook
+---
+
+This is an analysis of bills introduced between the start of filing up until
+January 17. I'm still trying to figure out exactly how I want to do this, so
+this is mainly me experimenting with the dataset. I'm using data from LegiScan
+to look at all bills introduced to the session so far. 
+
+## Setup 
+```{r}
+library(tidyverse)
+library(janitor)
+```
+## Importing bill data 
+
+```{r}
+new_bills <- read_csv("Lege-Jan17/data-raw/bills.csv")
+
+new_bills
+```
+
+```{r}
+bill_details <- new_bills |> 
+  rename(date_filed = status_date) |> 
+  select(-session_id, -status, -status_desc, -title, -committee_id, -committee, -last_action_date, -last_action, -url, -state_link)
+
+bill_details
+```
+
+## Importing sponsor data for each bill 
+
+```{r}
+sponsor_IDs <- read_csv("Lege-Jan17/data-raw/sponsors.csv")
+
+sponsor_IDs
+```
+
+## Importing lawmaker data
+
+```{r}
+lawmakers <- read_csv("Lege-Jan17/data-raw/people.csv")
+
+lawmakers
+```
+
+```{r}
+#selecting the columns I want
+lawmakers_clean <- lawmakers |> 
+  select(people_id, name, party, role, district)
+
+lawmakers_clean
+```
+
+## Merging the sponsor and lawmaker datasets
+
+```{r}
+bill_IDs <- merge(lawmakers_clean, bill_sponsors) |> 
+  select(-position)
+
+bill_IDs
+```
+
+## Merging all of the data together 
+
+#I want to add the date_filed and description columns from my bill_details data table 
+
+```{r
+```
+
+
+
