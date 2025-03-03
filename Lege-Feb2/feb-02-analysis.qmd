@@ -6,7 +6,7 @@ editor: visual
 
 ## Bills Introduced in the 2025 Texas Legislative Session
 
-### January 18 to February 2
+### Up to February 2
 
 This is the analysis portion of bill data since the start of the filing period up until Feb. 2. I'm importing the data file I saved from the cleaning portion. These are some of the questions I hope to answer:
 
@@ -14,9 +14,9 @@ This is the analysis portion of bill data since the start of the filing period u
 
 -   Where are the bills coming from across the State?
 
--   
+-   How many bills are associated with different policy areas? Examples being abortion, immigration, environment, education, religion, insurance, etc. (will use grepyl to code for key words in strings)
 
-How to filter for keyword: filter(grepl("word", column, ignore.case = TRUE))
+-   Look at who is filing the most bills per seat ... so divide number of bills per party by number of seats for that party
 
 ### Setup
 
@@ -28,5 +28,151 @@ library(janitor)
 ### Importing my clean data
 
 ```{r}
-read_rds("data-processed/02texasbills.rds")
+bill_data <- read_rds("data-processed/02texasbills.rds")
+
+bill_data
+```
+
+### Filtering bill description by keyword
+
+For example, how many bills use the term abortion?
+
+```{r}
+bill_data |> 
+  filter(grepl("abortion", description, ignore.case = TRUE))
+```
+
+What about terms related to abortion?
+
+```{r}
+#trying to filter description by keyword
+bill_data |> 
+  filter(grepl("fetal|viability|pregnancy|termination|miscarriage|minor|consent|rape|incest|remains|patient|privacy", description, ignore.case = TRUE))
+```
+
+How many bills use the words diversity, equity, inclusion, or DEI?
+
+```{r}
+bill_data |> 
+  filter(grepl("diversity|equity|inclusion|DEI", description, ignore.case = TRUE))
+```
+
+How many bills mention the word immigration in the description?
+
+```{r}
+bill_data |> 
+  filter(grepl("immigration", description, ignore.case = TRUE))
+```
+
+What about terms relating to immigration?
+
+```{r}
+bill_data |> 
+  filter(grepl("border|asylum|refugee|citizenship|deportation|naturalization|undocumented|detention|dreamers", description, ignore.case = TRUE))
+```
+
+How many bills use the words environment or energy in the description?
+
+```{r}
+bill_data |> 
+  filter(grepl("environment|energy", description, ignore.case = TRUE))
+```
+
+What about terms relating to environment/energy?
+
+```{r}
+bill_data |> 
+  filter(grepl("conservation|water|natural|gas|power|grid|climate|greenhouse|emissions|air|pollution|renewable|fossil|fuel|offshore|fracking|sustainability", description, ignore.case = TRUE))
+
+```
+
+I don't understand all of these results.
+
+How many bills use the term vouchers in the description?
+
+```{r}
+bill_data |> 
+  filter(grepl("voucher|vouchers", description, ignore.case = TRUE))
+```
+
+How many bills use terms related to school choice?
+
+```{r}
+bill_data |> 
+  filter(grepl("savings|account|school|choice|parental|education|K-12", description, ignore.case = TRUE))
+```
+
+How many bills use the term prayer in the description?
+
+```{r}
+
+```
+
+### Finding lawmakers who filed most vs. least bills
+
+```{r}
+#lawmakers who filed most bills 
+bill_data |> 
+  select(name, party, role, district) |> 
+  count(name, party, district) |> 
+  arrange(desc(n))
+```
+
+```{r}
+#lawmakers who filed least bills 
+bill_data |> 
+  select(name, party, role, district) |> 
+  count(name, party, district) |> 
+  arrange(n)
+```
+
+```{r}
+#spliting this up by party, democrats first
+bill_data |> 
+  select(name, party, role, district) |> 
+  group_by(party) |> 
+  count(name) |> 
+  filter(party == "D", n > 10) |> 
+  arrange(desc(n))
+```
+
+```{r}
+#now republicans
+bill_data |> 
+  select(name, party, role, district) |> 
+  group_by(party) |> 
+  count(name) |> 
+  filter(party == "R", n > 10) |> 
+  arrange(desc(n))
+```
+
+### Which party has filed the most bills?
+
+```{r}
+bill_data |> 
+  select(party) |> 
+  count(party)
+```
+
+### What types of lawmakers are filing the most bills?
+
+```{r}
+bill_data |> 
+  group_by(party) |> 
+  count(role) |> 
+  arrange(desc(n))
+```
+
+Is this proportional to seats per party?
+
+-   Republican seats in House is 88
+
+-   Democrat seats in House is 62
+
+-   Republican seats in Senate is 20
+
+-   Democrat seats in Senate is 11
+
+```{r}
+
 ```

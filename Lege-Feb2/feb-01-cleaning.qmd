@@ -6,9 +6,9 @@ editor: visual
 
 ## Bills introduced in the 2025 Texas Legislative Session
 
-### January 17 to February 2
+### Up to February 2
 
-This is a continuation of my analysis of bills filed in the current Texas Legislative session. This document shows my cleaning of the data. I'm combining and cleaning data from three different csvs to include bill_id, bill_number, date_filed, and description as well as important identifying information for the sponsor of each bill.
+This is a continuation of my analysis of bills filed in the current Texas Legislative session. This document shows my cleaning of the data. I'm combining and cleaning data from three different CSVs to include bill_id, bill_number, date_filed, and description as well as important identifying information for the sponsor of each bill.
 
 ### Setup
 
